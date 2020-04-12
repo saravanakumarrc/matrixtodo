@@ -10,7 +10,7 @@ import { convertToHours } from '../utilities/TimeUtility';
 class TaskGroup extends Component {
     render() { 
         const { tasks, taskGroup, onTaskCompleted, onTaskRemoved, onDragStart, onDragOver, onDrop, onDropTask, onDragEnter } = this.props;
-        const filterdTasks = _.filter(tasks,(task) => task.taskGroup === taskGroup);
+        const filterdTasks = _.filter(tasks,(task) => task.taskGroup === taskGroup.id);
         const numberOfTasks = filterdTasks.length;
         const totalEstimate = _.sumBy(filterdTasks, (task) => task.estimate);
         const hoursRequired = convertToHours(totalEstimate);
@@ -20,7 +20,7 @@ class TaskGroup extends Component {
                 <TaskGroupHeader name={this.props.taskGroup.name} id={this.props.taskGroup.id} />
                 { 
                     filterdTasks.map((task) => {
-                        return <Task   key={task.taskId} 
+                        return <Task   key={task.id} 
                                 task={task} 
                                 onTaskCompleted={onTaskCompleted}
                                 onTaskRemoved={onTaskRemoved}

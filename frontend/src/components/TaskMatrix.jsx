@@ -18,16 +18,16 @@ class TaskMatrix extends Component {
     }
 
     getTasks(taskGroup){
-        return _.filter(this.state.tasks, (task) => task.taskGroup.id === taskGroup.id);
+        return _.filter(this.state.tasks, (task) => task.taskGroup === taskGroup);
     }
 
-    handleTaskCompleted = ({ taskId }) => {
-        this.setState({ tasks: _.reject(this.state.tasks, { taskId })} ) ;
+    handleTaskCompleted = ({ id }) => {
+        this.setState({ tasks: _.reject(this.state.tasks, { id })} ) ;
         //TODO: service call
     }
 
-    handleTaskRemoved = ({ taskId }) => {
-        this.setState({ tasks: _.reject(this.state.tasks, { taskId })} ) ;
+    handleTaskRemoved = ({ id }) => {
+        this.setState({ tasks: _.reject(this.state.tasks, { id })} ) ;
         //TODO: service call
     }
 

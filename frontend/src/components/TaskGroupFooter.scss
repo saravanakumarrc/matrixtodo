@@ -1,0 +1,16 @@
+.task-group-footer.task-content {
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-top: 2px solid gray;
+    padding: 5px;
+    background: gainsboro;
+}
+    
+.task-group-footer-numberOfTasks {
+    float: left;
+}
+
+.task-group-footer-hoursRequired {
+    float: right;
+    font-style: italic;
+}

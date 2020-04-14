@@ -1,10 +1,12 @@
 ﻿using MatrixTodo.Models;
 using MatrixTodo.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace TasksApi.Controllers
 {
+    [EnableCors("CORSPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase
@@ -16,11 +18,26 @@ namespace TasksApi.Controllers
             _taskService = taskService;
         }
 
+        // OPTIONS: api/TodoItems2/5
+        [HttpOptions("{id}")]
+        public IActionResult PreflightRoute(int id)
+        {
+            return NoContent();
+        }
+
+        // OPTIONS: api/TodoItems2 
+        [HttpOptions]
+        public IActionResult PreflightRoute()
+        {
+            return NoContent();
+        }
+
         [HttpGet]
+
         public ActionResult<List<Task>> Get() =>
             _taskService.Get();
 
-        [HttpGet("{id:length(24)}", Name = "GetTask")]
+        [HttpGet("{id:length(24)}")]
         public ActionResult<Task> Get(string id)
         {
             var task = _taskService.Get(id);
@@ -38,7 +55,7 @@ namespace TasksApi.Controllers
         {
             _taskService.Create(task);
 
-            return CreatedAtRoute("GetTask", new { id = task.Id.ToString() }, task);
+            return Get(task.Id);
         }
 
         [HttpPut("{id:length(24)}")]

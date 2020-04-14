@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 
 namespace matrixtodo
 {
@@ -37,6 +38,15 @@ namespace matrixtodo
 
             services.AddSingleton<TaskService>();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "CORSPolicy",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();                                
+                    });
+            });
+
             services.AddControllers()
                 .AddNewtonsoftJson(options => options.UseMemberCasing());
         }
@@ -52,6 +62,7 @@ namespace matrixtodo
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("CORSPolicy");
 
             app.UseAuthorization();
 

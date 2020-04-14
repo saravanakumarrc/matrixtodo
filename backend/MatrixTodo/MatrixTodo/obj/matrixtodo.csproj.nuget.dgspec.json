@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\matrixtodo\\MatrixTodo.csproj": {}
+    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj": {}
   },
   "projects": {
-    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\matrixtodo\\MatrixTodo.csproj": {
+    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\matrixtodo\\MatrixTodo.csproj",
+        "projectUniqueName": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj",
         "projectName": "MatrixTodo",
-        "projectPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\matrixtodo\\MatrixTodo.csproj",
+        "projectPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj",
         "packagesPath": "C:\\Users\\sradhakrishnan\\.nuget\\packages\\",
-        "outputPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\matrixtodo\\obj\\",
+        "outputPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -41,6 +41,10 @@
       "frameworks": {
         "netcoreapp3.0": {
           "dependencies": {
+            "Microsoft.AspNet.WebApi.Cors": {
+              "target": "Package",
+              "version": "[5.2.7, )"
+            },
             "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[3.0.0, )"

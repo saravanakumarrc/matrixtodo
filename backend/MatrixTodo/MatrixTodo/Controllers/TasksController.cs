@@ -87,5 +87,22 @@ namespace TasksApi.Controllers
 
             return NoContent();
         }
+        [HttpPut]
+        public IActionResult Update([System.Web.Http.FromUri] Task[] tasks)
+        {
+            foreach(var t in tasks)
+            {
+                var task = _taskService.Get(t.Id);
+
+                if (task == null)
+                {
+                    return NotFound();
+                }
+
+                _taskService.Update(t.Id, t);
+            }
+
+            return NoContent();
+        }
     }
 }

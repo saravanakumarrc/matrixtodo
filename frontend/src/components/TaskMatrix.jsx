@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import TaskGroup from './TaskGroup';
-import { getTasks, saveTask, deleteTask } from "../services/TaskServices";
+import { getTasks, saveTask, deleteTask, updateTasks } from "../services/TaskServices";
 import { getTaskGroups } from "../services/TaskGroupServices";
 import { getLabels } from "../services/LabelServices";
 import { getSettings } from '../services/settingsService';
@@ -85,18 +85,18 @@ class TaskMatrix extends Component {
         e.preventDefault();
     }
 
-    handleDrop = (e, taskGroup) => {
-        console.log('droppingTaskGroup', taskGroup);
+    handleDrop = (e, droppingTaskGroup) => {
+        console.log('droppingTaskGroup', droppingTaskGroup);
         let draggingTask = this.state.draggingTask;
-        if(draggingTask.taskGroup !== taskGroup.id){
-            draggingTask.taskGroup = taskGroup.id;
-            //this.updateState(draggingTask);
-            //this.saveTask(draggingTask);
-
-            var tasks = this.getTasksByTaskGroup(taskGroup.id);
-            if(tasks.length){
-
-            }
+        if(draggingTask.taskGroup !== droppingTaskGroup.id){
+            // const draggingTaskGroupTasks = this.getTasksByTaskGroupOrdered(this.state.draggingTask.id);
+            // let draggingTaskIndex = this.findIndexById(this.state.draggingTask, draggingTaskGroupTasks);
+            // while (draggingTaskIndex < draggingTaskGroupTasks.length){
+            //     draggingTaskGroupTasks[draggingTaskIndex].order--;
+            //     draggingTaskIndex++;
+            // }
+            // draggingTask.taskGroup = droppingTaskGroup.id; 
+            // this.setState({ tasks: this.state.tasks });
         }
     }
 
@@ -130,17 +130,29 @@ class TaskMatrix extends Component {
                 rearrangedTasks.push(draggingTask);
             }
             this.setState({ tasks: this.state.tasks });
-            //this.updateStateOfRearranged(rearrangedTasks);
+            updateTasks(rearrangedTasks);
+        } else if(draggingTask.taskGroup !== droppedOnTask.taskGroup){
+            let rearrangedTasks = [];
+            //correcting dgg
+            const draggingGroupTasks = this.getTasksByTaskGroupOrdered(draggingTask.taskGroup);
+            const draggingTaskIndex = this.findIndexById(draggingTask, draggingGroupTasks);
+            for(let i = draggingTaskIndex + 1; i < draggingGroupTasks.length; i++){
+                draggingGroupTasks[i].order = draggingGroupTasks[i].order - 1;
+                rearrangedTasks.push(draggingGroupTasks[i]);
+            }
+            draggingTask.order = droppedOnTask.order;
+            //correcting dpg
+            const droppingGroupTask = this.getTasksByTaskGroupOrdered(droppedOnTask.taskGroup);
+            const droppingTaskIndex = this.findIndexById(droppedOnTask, droppingGroupTask);
+            for(let i = droppingTaskIndex; i < droppingGroupTask.length; i++){
+                droppingGroupTask[i].order = droppingGroupTask[i].order + 1;
+                rearrangedTasks.push(droppingGroupTask[i]);
+            }
+            draggingTask.taskGroup = droppedOnTask.taskGroup;
+            rearrangedTasks.push(draggingTask);
+            this.setState({ tasks: this.state.tasks });
+            updateTasks(rearrangedTasks);
         }
-    }
-
-    updateStateOfRearranged(rearrangedTasks) {
-        const tasks = this.state.tasks;
-        rearrangedTasks.forEach(task => {
-            const taskIndex = this.findIndexById(task);        
-            tasks[taskIndex] = task;
-        });
-        this.setState({ tasks: tasks });
     }
 
     updateState(task) {

@@ -22,3 +22,7 @@ export function saveTask(task) {
 export function deleteTask(task) {
     return http.delete(taskUrl(task.id));
 }
+
+export function updateTasks(tasks) {   
+    return http.put(apiEndpoint, tasks);
+}

@@ -4,6 +4,7 @@ import TaskGroup from './TaskGroup';
 import { getTasks, saveTask, deleteTask } from "../services/TaskServices";
 import { getTaskGroups } from "../services/TaskGroupServices";
 import { getLabels } from "../services/LabelServices";
+import { getSettings } from '../services/settingsService';
 
 class TaskMatrix extends Component {
     state = {
@@ -12,22 +13,32 @@ class TaskMatrix extends Component {
         taskGroups: [],
         draggingTask: {}
     };
+    settings = getSettings();
 
     async componentDidMount() {    
         const { data: tasks } = await getTasks();
         this.setState({ tasks: tasks, labels: getLabels(), taskGroups: getTaskGroups() });
     }
 
-    getTasksByTaskGroup(taskGroup){
-        return _.filter(this.state.tasks, (task) => task.taskGroup === taskGroup && task.status !== 'completed');
+    getTasksByTaskGroup(taskGroupId){
+        return _.filter(this.state.tasks, (task) => task.taskGroup === taskGroupId && task.status !== 'completed');
     }
 
-    getMaxTaskOrder(){
-        return _.maxBy(this.state.tasks, (task) => task.order);
+    getTasksByTaskGroupOrdered(taskGroupId){
+        const filterdTasks = this.getTasksByTaskGroup(taskGroupId);
+        return _.orderBy(filterdTasks, (task) => task.order);
     }
 
-    findIndexById(task){
-       return _.findIndex(this.state.tasks, (t) => t.id === task.id);
+    getMaxTaskOrder(taskGroupId){
+        const filterdTasks = this.getTasksByTaskGroup(taskGroupId);
+        if(filterdTasks.length===0){
+            return { order: 0};
+        }
+        return _.maxBy(filterdTasks, (task) => task.order);
+    }
+
+    findIndexById(task, tasks = this.state.tasks){
+       return _.findIndex(tasks, (t) => t.id === task.id);
     }
 
     saveTask(task){
@@ -47,8 +58,9 @@ class TaskMatrix extends Component {
 
     handleTaskSaved = (task) => {
         if(!task.id){
-            const { order: maxOrder } = this.getMaxTaskOrder();
+            const { order: maxOrder } = this.getMaxTaskOrder(task.taskGroup);
             task.order = maxOrder + 1;
+            task.status = this.settings.defaultStatus;
         }
         return this.saveTask(task);
     }
@@ -73,23 +85,63 @@ class TaskMatrix extends Component {
         e.preventDefault();
     }
 
-    handleDrop = (e, taskGroup) => {
-        console.log('droppingTaskGroup', taskGroup);
+    handleDrop = (e, droppingTaskGroup) => {
+        console.log('droppingTaskGroup', droppingTaskGroup);
         let draggingTask = this.state.draggingTask;
-        if(draggingTask.taskGroup !== taskGroup.id){
-            draggingTask.taskGroup = taskGroup.id;
-            this.updateState(draggingTask);
-            this.saveTask(draggingTask);
-
-            var tasks = this.getTasksByTaskGroup(taskGroup);
-            if(tasks.length){
-
+        if(draggingTask.taskGroup !== droppingTaskGroup.id){
+            var droppingTaskGroupTasks = this.getTasksByTaskGroup(droppingTaskGroup.id);
+            if(droppingTaskGroupTasks.length === 0){
+                draggingTask.taskGroup = droppingTaskGroup.id;
+                draggingTask.order = this.getMaxTaskOrder(droppingTaskGroup.id);
+                this.updateState(draggingTask);
+                this.saveTask(draggingTask);
             }
         }
     }
 
     handleDropOnTask = (e, droppedOnTask) => {
         console.log('droppedOnTask', droppedOnTask);
+        let draggingTask = this.state.draggingTask;
+        let rearrangedTasks = [];
+        if(draggingTask.taskGroup === droppedOnTask.taskGroup){            
+            var tasks = this.getTasksByTaskGroupOrdered(droppedOnTask.taskGroup);
+            if(draggingTask.order < droppedOnTask.order){
+                const droppedTaskOrder = droppedOnTask.order;
+                let startIndex = this.findIndexById(droppedOnTask, tasks);
+                let endIndex = this.findIndexById(draggingTask, tasks);
+                while(startIndex > endIndex){
+                    tasks[startIndex].order = tasks[startIndex - 1].order;
+                    rearrangedTasks.push(tasks[startIndex]);
+                    startIndex--;
+                }
+                draggingTask.order = droppedTaskOrder;
+                rearrangedTasks.push(draggingTask);
+            } else if(draggingTask.order > droppedOnTask.order){
+                const droppedTaskOrder = droppedOnTask.order;
+                let startIndex = this.findIndexById(droppedOnTask, tasks);
+                let endIndex = this.findIndexById(draggingTask, tasks);
+                while(startIndex < endIndex){
+                    tasks[startIndex].order = tasks[startIndex + 1].order;
+                    rearrangedTasks.push(tasks[startIndex]);
+                    startIndex++;
+                }
+                draggingTask.order = droppedTaskOrder;
+                rearrangedTasks.push(draggingTask);
+            }
+            //this.updateStateOfRearranged(rearrangedTasks);
+        } else if(draggingTask.taskGroup !== droppedOnTask.taskGroup){
+            
+        }
+        this.setState({ tasks: this.state.tasks });
+    }
+
+    updateStateOfRearranged(rearrangedTasks) {
+        const tasks = this.state.tasks;
+        rearrangedTasks.forEach(task => {
+            const taskIndex = this.findIndexById(task);        
+            tasks[taskIndex] = task;
+        });
+        this.setState({ tasks: tasks });
     }
 
     updateState(task) {
@@ -100,7 +152,7 @@ class TaskMatrix extends Component {
     }
 
     render() { 
-        const {taskGroups, tasks, labels } = this.state;
+        const { taskGroups, labels } = this.state;
 
         return (      
             <React.Fragment>
@@ -109,7 +161,7 @@ class TaskMatrix extends Component {
                         return <TaskGroup   key={taskGroup.id} 
                                             className={taskGroup.id} 
                                             taskGroup={taskGroup} 
-                                            tasks={tasks} 
+                                            tasks={this.getTasksByTaskGroupOrdered(taskGroup.id)} 
                                             labels={labels} 
                                             onTaskCompleted={this.handleTaskCompleted}
                                             onTaskSaved={this.handleTaskSaved}

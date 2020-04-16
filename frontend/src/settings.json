@@ -1,3 +1,4 @@
 {
-    "defaultEstimate": 30
+    "defaultEstimate": 30,
+    "defaultStatus": "open"
 }

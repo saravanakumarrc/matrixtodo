@@ -14,7 +14,7 @@ class Task extends Component {
                 droppable="true" onDragOver={(e)=> onDragOver(e, task)} 
                 onDrop={(e)=>{ onDropTask(e, task)}}>
                 <input type="checkbox" value="completed" onChange={ () => onTaskCompleted(task) }></input>
-                <label className="task-description">{ task.description }</label>
+                <label className="task-description">{ task.description } - { task.order }</label>
                 <FontAwesomeIcon className="task-delete" icon={faTrashAlt} onClick={() => onTaskRemoved(task)} />
             </div>
          );

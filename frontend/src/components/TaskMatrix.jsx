@@ -85,16 +85,17 @@ class TaskMatrix extends Component {
         e.preventDefault();
     }
 
-    handleDrop = (e, droppingTaskGroup) => {
-        console.log('droppingTaskGroup', droppingTaskGroup);
+    handleDrop = (e, taskGroup) => {
+        console.log('droppingTaskGroup', taskGroup);
         let draggingTask = this.state.draggingTask;
-        if(draggingTask.taskGroup !== droppingTaskGroup.id){
-            var droppingTaskGroupTasks = this.getTasksByTaskGroup(droppingTaskGroup.id);
-            if(droppingTaskGroupTasks.length === 0){
-                draggingTask.taskGroup = droppingTaskGroup.id;
-                draggingTask.order = this.getMaxTaskOrder(droppingTaskGroup.id);
-                this.updateState(draggingTask);
-                this.saveTask(draggingTask);
+        if(draggingTask.taskGroup !== taskGroup.id){
+            draggingTask.taskGroup = taskGroup.id;
+            //this.updateState(draggingTask);
+            //this.saveTask(draggingTask);
+
+            var tasks = this.getTasksByTaskGroup(taskGroup.id);
+            if(tasks.length){
+
             }
         }
     }
@@ -102,8 +103,8 @@ class TaskMatrix extends Component {
     handleDropOnTask = (e, droppedOnTask) => {
         console.log('droppedOnTask', droppedOnTask);
         let draggingTask = this.state.draggingTask;
-        let rearrangedTasks = [];
-        if(draggingTask.taskGroup === droppedOnTask.taskGroup){            
+        if(draggingTask.taskGroup === droppedOnTask.taskGroup){
+            let rearrangedTasks = [];
             var tasks = this.getTasksByTaskGroupOrdered(droppedOnTask.taskGroup);
             if(draggingTask.order < droppedOnTask.order){
                 const droppedTaskOrder = droppedOnTask.order;
@@ -128,11 +129,9 @@ class TaskMatrix extends Component {
                 draggingTask.order = droppedTaskOrder;
                 rearrangedTasks.push(draggingTask);
             }
+            this.setState({ tasks: this.state.tasks });
             //this.updateStateOfRearranged(rearrangedTasks);
-        } else if(draggingTask.taskGroup !== droppedOnTask.taskGroup){
-            
         }
-        this.setState({ tasks: this.state.tasks });
     }
 
     updateStateOfRearranged(rearrangedTasks) {

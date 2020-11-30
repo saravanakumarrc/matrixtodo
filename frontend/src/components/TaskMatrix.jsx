@@ -38,7 +38,7 @@ class TaskMatrix extends Component {
     }
 
     findIndexById(task, tasks = this.state.tasks){
-       return _.findIndex(tasks, (t) => t.id === task.id);
+       return _.findIndex(tasks, t => t.id === task.id);
     }
 
     saveTask(task){

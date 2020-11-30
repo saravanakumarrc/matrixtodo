@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\MatrixTodo\\MatrixTodo.csproj": {}
+    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj": {}
   },
   "projects": {
-    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\MatrixTodo\\MatrixTodo.csproj": {
+    "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\MatrixTodo\\MatrixTodo.csproj",
+        "projectUniqueName": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj",
         "projectName": "MatrixTodo",
-        "projectPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\MatrixTodo\\MatrixTodo.csproj",
+        "projectPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\MatrixTodo.csproj",
         "packagesPath": "C:\\Users\\sradhakrishnan\\.nuget\\packages\\",
-        "outputPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\MatrixTodo\\MatrixTodo\\obj\\",
+        "outputPath": "C:\\ArchitectJourney\\Technologies\\React\\matrixtodo\\backend\\matrixtodo\\matrixtodo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -29,6 +29,7 @@
         },
         "frameworks": {
           "netcoreapp3.0": {
+            "targetAlias": "netcoreapp3.0",
             "projectReferences": {}
           }
         },
@@ -40,6 +41,7 @@
       },
       "frameworks": {
         "netcoreapp3.0": {
+          "targetAlias": "netcoreapp3.0",
           "dependencies": {
             "Microsoft.AspNet.WebApi.Cors": {
               "target": "Package",
@@ -56,6 +58,12 @@
             "Microsoft.AspNetCore.Server.Kestrel": {
               "target": "Package",
               "version": "[2.2.0, )"
+            },
+            "Microsoft.CodeAnalysis.FxCopAnalyzers": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.9.6, )"
             },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
@@ -84,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

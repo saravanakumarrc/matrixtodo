@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:61388",
-      "sslPort": 44303
+      "applicationUrl": "http://localhost:65178",
+      "sslPort": 44309
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -17,10 +17,10 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "matrixtodo": {
+    "sampleWindowsContainer": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/tasks",
+      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -29,7 +29,7 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/tasks",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
       "publishAllPorts": true,
       "useSSL": true
     }
